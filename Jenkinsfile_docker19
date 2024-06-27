@@ -10,6 +10,12 @@ pipeline {
     }
     stages {
         stage('Terraform Init') {
+            agent {
+                docker {
+                    image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
+                    args '-u root:root' // Optional: Run as root user if necessary
+                }
+            }
             steps {
                 echo "Initializing Terraform in branch, ${env.BRANCH_NAME}"
                 // Add your build steps here
@@ -26,6 +32,12 @@ pipeline {
         }
         stage('Validate') {
                 // Add comments to check if branch is main, dev, stag and DEN-*
+            agent {
+                docker {
+                    image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
+                    args '-u root:root' // Optional: Run as root user if necessary
+                }
+            }
             steps {
                 echo "Running Validation in branch ${env.BRANCH_NAME}"
                 // Add your test steps here
@@ -34,6 +46,12 @@ pipeline {
         }
         stage('Plan') {
                 // Add comments to check if branch is main, dev, stag and DEN-*
+            agent {
+                docker {
+                    image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
+                    args '-u root:root' // Optional: Run as root user if necessary
+                }
+            }
             steps {
                 echo "Running Plan in branch ${env.BRANCH_NAME}"
                 // Add your test steps here
@@ -48,6 +66,12 @@ pipeline {
             when {
                 branch 'main'
             }
+            agent {
+                docker {
+                    image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
+                    args '-u root:root' // Optional: Run as root user if necessary
+                }
+            }
             steps {
                 echo "Running Apply in branch ${env.BRANCH_NAME}"
                 // This runs on merge to master only ...
@@ -57,3 +81,4 @@ pipeline {
             }
         }
     }
+}
