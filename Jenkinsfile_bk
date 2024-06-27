@@ -13,15 +13,9 @@ pipeline {
             steps {
                 echo "Initializing Terraform in branch, ${env.BRANCH_NAME}"
                 // Add your build steps here
-                sh '''
-                terraform init \
-                -backend-config="bucket=dub-jenkins-terraform-state" \
-                -backend-config="key=state/dub-jenkins-terraform.tfstate" \
-                -backend-config="eu-west-1" \
-                -backend-config="dynamodb_table=jenkins-terraform-state" \
-                -backend-config="encrypt=true"
-                '''
-            }
+                script {
+                    sh 'terraform init'
+                }
             }
         }
         stage('Validate') {
@@ -38,8 +32,7 @@ pipeline {
                 echo "Running Plan in branch ${env.BRANCH_NAME}"
                 // Add your test steps here
                 script {
-                    sh 'terraform plan -out=planfile.tfplan'
-                    archiveArtifacts artifacts: 'planfile.tfplan', fingerprint: true
+                    sh 'terraform plan'
                 }
             }
         }
@@ -52,7 +45,7 @@ pipeline {
                 echo "Running Apply in branch ${env.BRANCH_NAME}"
                 // This runs on merge to master only ...
                 script {
-                    sh 'terraform apply -auto-approve planfile.tfplan'
+                    sh 'terraform apply -auto-approve'
                 }
             }
         }
