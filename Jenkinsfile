@@ -45,7 +45,7 @@ pipeline {
                 echo "Running Apply in branch ${env.BRANCH_NAME}"
                 // This runs on merge to master only ...
                 script {
-                    sh 'terraform apply -auto-approve tfplan'
+                    sh 'terraform apply -auto-approve'
                 }
             }
         }
