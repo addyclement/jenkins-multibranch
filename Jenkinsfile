@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo "Running Validation in branch ${env.BRANCH_NAME}"
                 // Add your test steps here
-                sh 'terraform validate -out=tfplan'
+                sh 'terraform validate'
             }
         }
         stage('Plan') {
@@ -32,7 +32,7 @@ pipeline {
                 echo "Running Plan in branch ${env.BRANCH_NAME}"
                 // Add your test steps here
                 script {
-                    sh 'terraform plan -out=tfplan'
+                    sh 'terraform plan'
                 }
             }
         }
