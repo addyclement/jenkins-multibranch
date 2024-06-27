@@ -9,6 +9,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
+        
         stage('Terraform Init') {
             steps {
                 echo "Initializing Terraform in branch, ${env.BRANCH_NAME}"
@@ -23,7 +24,7 @@ pipeline {
                 '''
             }
             }
-        }
+
         stage('Validate') {
                 // Add comments to check if branch is main, dev, stag and DEN-*
             steps {
@@ -57,3 +58,4 @@ pipeline {
             }
         }
     }
+}
