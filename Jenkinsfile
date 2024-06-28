@@ -15,6 +15,7 @@ pipeline {
                 echo "Initializing Terraform in branch, ${env.BRANCH_NAME}"
                 // Add your build steps here
                 sh """
+                ls -lrth
                 terraform init 
                 """
             }
