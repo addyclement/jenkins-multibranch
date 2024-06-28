@@ -17,7 +17,7 @@ pipeline {
                 sh '''
                 terraform init \
                 -backend-config="bucket=dub-jenkins-terraform-state" \
-                -backend-config="key=state/dub-jenkins-terraform.tfstate" \
+                -backend-config="key=state/${env.BRANCH_NAME}/dub-jenkins-terraform.tfstate" \
                 -backend-config="region=eu-west-1" \
                 -backend-config="dynamodb_table=jenkins-terraform-state" \
                 -backend-config="encrypt=true"
