@@ -15,13 +15,12 @@ pipeline {
                 echo "Initializing Terraform in branch, ${env.BRANCH_NAME}"
                 // Add your build steps here
                 sh '''
-                terraform init \
+                terraform init -reconfigure \
                 -backend-config="bucket=dub-jenkins-terraform-state" \
                 -backend-config="key=state/${env.BRANCH_NAME}/dub-jenkins-terraform.tfstate" \
                 -backend-config="region=eu-west-1" \
                 -backend-config="dynamodb_table=jenkins-terraform-state" \
-                -backend-config="encrypt=true" \
-                -reconfigure
+                -backend-config="encrypt=true"
                 '''
             }
             }
