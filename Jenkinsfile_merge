@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { image 'node:20.15.1-alpine3.20' }
         tools {
        terraform 'terraform'
     }
