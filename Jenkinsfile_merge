@@ -30,6 +30,12 @@ pipeline {
             }
         }
         stage('Plan') {
+            when {
+                anyOf{
+                    changeRequest()
+                    branch main branch dev
+                }
+            }
                 // Add comments to check if branch is main, dev, stag and DEN-*
             steps {
                 echo "Running Plan in branch ${env.BRANCH_NAME}"
