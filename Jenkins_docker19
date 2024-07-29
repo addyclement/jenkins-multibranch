@@ -11,7 +11,7 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
-                    args '-u root:root' // Optional: Run as root user if necessary
+                     args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
@@ -29,7 +29,7 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
-                    args '-u root:root' // Optional: Run as root user if necessary
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
@@ -43,7 +43,7 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
-                    args '-u root:root' // Optional: Run as root user if necessary
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
@@ -63,7 +63,7 @@ pipeline {
             agent {
                 docker {
                     image 'hashicorp/terraform:1.9.0' // Specify the Terraform Docker image and version
-                    args '-u root:root' // Optional: Run as root user if necessary
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
