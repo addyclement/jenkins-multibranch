@@ -23,7 +23,7 @@ pipeline {
                 '''
             }
             }
-        }
+        
         stage('Validate') {
                 // Add comments to check if branch is main, dev, stag and DEN-*
             agent {
@@ -75,3 +75,4 @@ pipeline {
             }
         }
     }
+}
