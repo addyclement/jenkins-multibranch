@@ -17,10 +17,12 @@ pipeline {
             steps {
                 echo "Initializing Terraform in branch, ${env.BRANCH_NAME}"
                 // Add your build steps here
-                sh '''
-                terraform init
-                terraform version 
-                '''
+                dir(./terraform) {
+                        sh '''
+                        terraform init
+                        terraform version 
+                        '''
+                }
             }
             }
         
