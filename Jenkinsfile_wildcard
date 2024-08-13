@@ -1,0 +1,80 @@
+pipeline {
+    agent any
+        tools {
+       terraform 'terraform' // Used for testing, could replace with custom terraform 1.9.x image on ECR
+    }
+    environment {
+        AWS_DEFAULT_REGION = 'eu-west-1'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+    stages {
+        // This multi branch pipeline is designed to run Init, Validate and Plan in main and *terraform* branches
+        // Run Apply only in the main branch
+        stage('Terraform Init') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch '.*terraform.*'
+                }
+            }
+            steps {
+                dir('terraform') {
+                    echo "Initializing Terraform in branch, ${env.BRANCH_NAME}"
+                    sh 'terraform init'
+                }
+            }
+        }
+
+        stage('Validate') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch '.*terraform.*'
+                }
+            }
+            steps {
+                dir('terraform') {
+                echo "Running Validation in branch ${env.BRANCH_NAME}"
+                // Add your test steps here
+                sh 'terraform validate'
+                }
+            }
+        }
+        stage('Plan') {
+            when { // Only run in main and branches having terraform in the name
+                anyOf {
+                    branch 'main'
+                    branch '.*terraform.*'
+                }
+            }
+            steps {
+                dir('terraform') {
+                echo "Running Plan in branch ${env.BRANCH_NAME}"
+                // Add your test steps here
+                script {
+                    sh 'terraform plan -out=planfile.tfplan'
+                    archiveArtifacts artifacts: 'planfile.tfplan', fingerprint: true
+                   }
+                }
+            }
+        }
+        stage('Apply') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Running Apply in branch ${env.BRANCH_NAME}"
+                // This runs on merge to master only ...
+                dir('terraform') {
+                    sh 'terraform apply -auto-approve planfile.tfplan'
+                }
+            }
+        }
+    }
+    post { // CleanUp
+        always {
+            cleanWs()
+        }
+    }
+}
